@@ -11,7 +11,7 @@ export async function POST() {
       body: JSON.stringify({
         items: [
           {
-            price_id: "pri_0lkhzzfmttd6jasgkxw2zmz8cw",
+            price_id: "pri_01kj01ra6r68sqz2tz2vrja54g",
             quantity: 1,
           },
         ],
