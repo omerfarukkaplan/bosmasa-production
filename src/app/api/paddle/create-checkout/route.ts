@@ -11,7 +11,8 @@ export async function POST() {
       body: JSON.stringify({
         items: [
           {
-            price_id: "pri_01kj01ra6r68sqz2tz2vrja54g"
+            price_id: "pri_01kj01ra6r68sqz2tz2vrja54g", // BURAYA KENDİ PRICE ID'Nİ KOY
+            quantity: 1
           }
         ]
       })
@@ -19,9 +20,8 @@ export async function POST() {
 
     const data = await response.json()
 
-    console.log("PADDLE RESPONSE:", data)
-
     if (!response.ok) {
+      console.log("PADDLE ERROR:", data)
       return NextResponse.json({ error: data }, { status: 400 })
     }
 
@@ -30,6 +30,7 @@ export async function POST() {
     })
 
   } catch (error) {
+    console.error(error)
     return NextResponse.json({ error: "Checkout failed" }, { status: 500 })
   }
 }
