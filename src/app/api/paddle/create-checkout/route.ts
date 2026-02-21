@@ -1,36 +1,35 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from "next/server"
 
 export async function POST() {
   try {
     const response = await fetch("https://sandbox-api.paddle.com/transactions", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.PADDLE_API_KEY}`,
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.PADDLE_API_KEY}`
       },
       body: JSON.stringify({
         items: [
           {
-            price_id: "pri_01kj01ra6r68sqz2tz2vrja54g",
-            quantity: 1,
-          },
-        ],
-        checkout: {
-          success_url: "https://followops.app/dashboard",
-          cancel_url: "https://followops.app/pricing",
-        },
-      }),
-    });
+            price_id: "pri_01kj01ra6r68sqz2tz2vrja54g"
+          }
+        ]
+      })
+    })
 
-    const data = await response.json();
+    const data = await response.json()
+
+    console.log("PADDLE RESPONSE:", data)
+
+    if (!response.ok) {
+      return NextResponse.json({ error: data }, { status: 400 })
+    }
 
     return NextResponse.json({
-      debug_from_paddle: data
-    });
+      checkoutUrl: data.data.checkout.url
+    })
 
-  } catch (error: any) {
-    return NextResponse.json({
-      error_message: error.message
-    }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json({ error: "Checkout failed" }, { status: 500 })
   }
 }
