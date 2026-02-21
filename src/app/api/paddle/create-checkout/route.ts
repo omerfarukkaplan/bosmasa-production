@@ -24,8 +24,13 @@ export async function POST() {
 
     const data = await response.json();
 
-    return NextResponse.json(data);
-  } catch (error) {
-    return NextResponse.json({ error: "Checkout error" }, { status: 500 });
+    return NextResponse.json({
+      debug_from_paddle: data
+    });
+
+  } catch (error: any) {
+    return NextResponse.json({
+      error_message: error.message
+    }, { status: 500 });
   }
 }
