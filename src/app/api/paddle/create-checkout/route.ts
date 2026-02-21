@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
 
 export async function POST() {
-  const response = await fetch(
-    "https://sandbox-api.paddle.com/checkout-sessions",
-    {
+  try {
+    const response = await fetch("https://sandbox-api.paddle.com/checkout/sessions", {
       method: "POST",
       headers: {
+        "Authorization": `Bearer ${process.env.PADDLE_API_KEY}`,
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.PADDLE_API_KEY}`,
       },
       body: JSON.stringify({
         items: [
@@ -16,15 +15,15 @@ export async function POST() {
             quantity: 1,
           },
         ],
-        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
-        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
+        success_url: "https://followops.app/dashboard",
+        cancel_url: "https://followops.app/pricing",
       }),
-    }
-  );
+    });
 
-  const data = await response.json();
+    const data = await response.json();
 
-  return NextResponse.json({
-    debug_from_paddle: data,
-  });
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json({ error: "Checkout error" }, { status: 500 });
+  }
 }
