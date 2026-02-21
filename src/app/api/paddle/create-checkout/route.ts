@@ -2,21 +2,23 @@ import { NextResponse } from "next/server";
 
 export async function POST() {
   try {
-    const response = await fetch("https://sandbox-api.paddle.com/checkout/sessions", {
+    const response = await fetch("https://sandbox-api.paddle.com/transactions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.PADDLE_API_KEY}`,
+        Authorization: `Bearer ${process.env.PADDLE_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         items: [
           {
-            price_id: "pri_01khzzfmttd6jasqkxw2zmz8cw",
+            price_id: "pri_0lkhzzfmttd6jasgkxw2zmz8cw",
             quantity: 1,
           },
         ],
-        success_url: "https://followops.app/dashboard",
-        cancel_url: "https://followops.app/pricing",
+        checkout: {
+          success_url: "https://followops.app/dashboard",
+          cancel_url: "https://followops.app/pricing",
+        },
       }),
     });
 
